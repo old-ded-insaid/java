@@ -132,7 +132,7 @@ class vehicle{
 
 class vehicle_demo{
   public static void main(String[] args) {
-    vehicle minivam = new vehicle();
+    vehicle2 minivam = new vehicle2();
     int range;
     minivam.fuelcap = 16;
     minivam.mpg = 21;
@@ -144,8 +144,8 @@ class vehicle_demo{
 
 class twovehicles{
   public  static void main(String[] args){
-    vehicle minivan = new vehicle();
-    vehicle sportscar = new vehicle();
+    vehicle2 minivan = new vehicle2();
+    vehicle2 sportscar = new vehicle2();
 
     int range1, range2;
     minivan.fuelcap = 16;
@@ -168,8 +168,8 @@ class twovehicles{
 
 class retmet{
   public static void main(String[] args){
-    vehicle minivan = new vehicle();
-    vehicle sportscar = new vehicle();
+    vehicle2 minivan = new vehicle2();
+    vehicle2 sportscar = new vehicle2();
     int range1, range2;
     minivan.passengers = 7;
     minivan.fuelcap = 16;
@@ -217,5 +217,126 @@ class IsFact {
     if (!x.isFactor(3, 20)) {
       System.out.println("не отобразится");
     }
+  }
+}
+
+class vehicle2 {
+  int passengers;
+  int fuelcap;
+  int mpg;
+  int range(){
+    return mpg*fuelcap;
+  }
+  double fuelneeded(int miles){
+    return(double) miles/mpg;
+  }
+}
+class compfuel{
+  public void main(String[] arg){
+    vehicle2 minivan = new vehicle2();
+    vehicle2 sportscar = new vehicle2();
+    double gallons;
+    int dist = 252;
+
+    minivan.passengers =7;
+    minivan.fuelcap = 16;
+    minivan.mpg = 21;
+
+    sportscar.passengers =2;
+    sportscar.fuelcap =14;
+    sportscar.mpg = 12;
+
+    gallons = minivan.fuelneeded(dist);
+
+    System.out.println("для поездки на расстояние " + dist + " миль минивэну требуется " + gallons + " галлонов топлива");
+
+    gallons= sportscar.fuelneeded(dist);
+    System.out.println("для поездки на расстояние " + dist + " миль минивэну требуется " + gallons + " галлонов топлива");
+  }
+}
+
+class myclass{
+  int x;
+  myclass(int i){
+    x = i;
+  }
+}
+class parmconsdemo {
+  public static void main(String[] args){
+    myclass t1 = new myclass(10);
+    myclass t2 = new myclass(88);
+    System.out.println(t1.x + " " + t2.x);
+  }
+}
+
+class vehicle3 {
+  int pass;
+  int fuel;
+  int mpg;
+
+  vehicle3(int p, int f, int m) {
+    pass = p;
+    fuel = f;
+    mpg = m;
+  }
+
+  int range() {
+    return mpg * fuel;
+  }
+
+  double fuelneeded(int miles) {
+    return (double) miles / mpg;
+  }
+}
+class vehconsdemo{
+  public static void main(String[] args){
+    vehicle3 minivan = new vehicle3(7, 16,21);
+    vehicle3 sportcar = new vehicle3(2,14,12);
+    double gallons;
+    int dist = 252;
+    gallons = minivan.fuelneeded(dist);
+    System.out.println(gallons);
+    gallons = sportcar.fuelneeded(dist);
+    System.out.println(gallons);
+  }
+}
+
+class pwr{
+  double b;
+  int e;
+  double val;
+  pwr(double base, int exp){
+    b = base;
+    e = exp;
+    val = 1;
+    if(exp == 0) return;
+    for(; exp > 0; exp --) val = val * base;
+  }
+  double getval(){
+    return val;
+  }
+}
+class  demopwr{
+  public static void main(String[] args){
+    pwr x = new pwr(4.0, 2);
+    pwr y = new pwr(2.5, 1);
+    pwr z = new pwr(5.7, 0);
+    System.out.println(x.b + " в степени " + x.e +
+          " равно " + x.getval());
+    System.out.println(y.b + " в степени " + y.e +
+          " равно " + y.getval());
+    System.out.println(z.b + " в степени " + z.e +
+          " равно " + z.getval());
+
+}}
+
+class arrayDemo {
+  public static void main(String[] args) {
+    int[] sample = new int[10];
+    int i;
+    for (i = 0; i < 10; i = i + 1)
+      sample[i] = i;
+    for (i = 0; i < 10; i = i + 1)
+      System.out.println("Элемент sample[" + i + "]: " + sample[i]); // <- вот здесь добавлена скобка
   }
 }
