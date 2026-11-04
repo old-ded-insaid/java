@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- Справочник упражнений: фильтры слева, таблица в центре, редактор справа -->
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.desktop.controller.ExerciseCatalogController"
+      styleClass="screen"
+      spacing="14">
+
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Button text="←" onAction="#onBack" styleClass="ghost-button"/>
+        <Label text="Справочник упражнений" styleClass="screen-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="countLabel" text="Найдено: 0" styleClass="muted"/>
+    </HBox>
+
+    <!-- Ширину колонок задаёт пользователь: тянет разделители мышью -->
+    <SplitPane orientation="HORIZONTAL" dividerPositions="0.2" VBox.vgrow="ALWAYS"
+               styleClass="catalog-split">
+
+        <!-- ===================== СЛЕВА: поиск и фильтр ===================== -->
+        <VBox styleClass="card" spacing="8" minWidth="200"
+              SplitPane.resizableWithParent="false">
+            <Label text="Поиск" styleClass="section-title"/>
+
+            <TextField fx:id="searchField" promptText="название или мышцы"/>
+
+            <Label text="Инвентарь" styleClass="caption"/>
+            <ComboBox fx:id="equipmentFilterBox" maxWidth="Infinity"/>
+
+            <Label text="Поиск не учитывает регистр и ищет по названию и мышцам."
+                   styleClass="muted" wrapText="true"/>
+        </VBox>
+
+        <!-- ================= Таблица + редактор (60% / 40%) ================= -->
+        <SplitPane orientation="HORIZONTAL" dividerPositions="0.6" styleClass="catalog-split">
+
+            <TableView fx:id="exerciseTable" minWidth="320">
+                <columns>
+                    <TableColumn fx:id="colName" text="Название" prefWidth="260" minWidth="140"/>
+                    <TableColumn fx:id="colMuscles" text="Мышцы" prefWidth="200" minWidth="100"/>
+                    <TableColumn fx:id="colEquipment" text="Инвентарь" prefWidth="220" minWidth="120"/>
+                </columns>
+            </TableView>
+
+            <!-- ==================== СПРАВА: редактор ==================== -->
+            <ScrollPane fx:id="detailsScroll"
+                        fitToWidth="true"
+                        fitToHeight="true"
+                        hbarPolicy="NEVER"
+                        vbarPolicy="AS_NEEDED"
+                        minWidth="260"
+                        styleClass="edge-to-edge">
+                <content>
+                    <VBox styleClass="card" spacing="8">
+
+                        <Label text="Упражнение" styleClass="section-title"/>
+                        <Label fx:id="selectedNameLabel"
+                               text="Выберите упражнение"
+                               styleClass="card-title"
+                               wrapText="true"/>
+
+                        <Label text="Исходное положение" styleClass="caption"/>
+                        <TextArea fx:id="setupArea" wrapText="true" VBox.vgrow="ALWAYS"/>
+
+                        <Label text="Движение" styleClass="caption"/>
+                        <TextArea fx:id="movementArea" wrapText="true" VBox.vgrow="ALWAYS"/>
+
+                        <Label text="Мышцы" styleClass="caption"/>
+                        <TextArea fx:id="musclesArea" wrapText="true" VBox.vgrow="ALWAYS"/>
+
+                        <Label text="Чего избегать" styleClass="caption"/>
+                        <TextArea fx:id="avoidArea" wrapText="true" VBox.vgrow="ALWAYS"/>
+
+                        <Label text="Инвентарь" styleClass="caption"/>
+                        <Label text="Чтобы привязать инвентарь, выберите его в списке ниже."
+                               styleClass="muted" wrapText="true"/>
+                        <ListView fx:id="equipmentList" prefHeight="90"/>
+
+                        <HBox spacing="8">
+                            <ComboBox fx:id="equipmentBox"
+                                      HBox.hgrow="ALWAYS"
+                                      maxWidth="Infinity"
+                                      promptText="Выберите инвентарь"/>
+                            <Spinner fx:id="quantitySpinner" prefWidth="80"/>
+                        </HBox>
+
+                        <HBox spacing="8">
+                            <Button fx:id="attachButton"
+                                    text="Прикрепить"
+                                    onAction="#onAttach"
+                                    styleClass="small-button"
+                                    HBox.hgrow="ALWAYS"
+                                    maxWidth="Infinity"/>
+                            <Button fx:id="detachButton"
+                                    text="Убрать"
+                                    onAction="#onDetach"
+                                    styleClass="small-button"
+                                    disable="true"/>
+                        </HBox>
+
+                        <Button fx:id="saveButton"
+                                text="Сохранить изменения"
+                                onAction="#onSave"
+                                styleClass="primary-button"
+                                maxWidth="Infinity"
+                                disable="true"/>
+
+                        <Label fx:id="statusLabel" styleClass="muted" wrapText="true"/>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </SplitPane>
+    </SplitPane>
+</VBox>

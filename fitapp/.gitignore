@@ -1,0 +1,28 @@
+# Maven
+target/
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse / VS Code
+.project
+.classpath
+.settings/
+.vscode/
+
+# Логи и падения JVM
+*.log
+hs_err_pid*
+replay_pid*
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Локальные копии настроек
+*.local

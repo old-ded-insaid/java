@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.fitapp</groupId>
+        <artifactId>fitapp-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>desktop</artifactId>
+    <name>fitapp desktop</name>
+    <description>JavaFX-интерфейс: FXML + CSS + таймер тренировки</description>
+
+    <properties>
+        <!--
+            Запускаем не сам MainApp, а Launcher — обычный класс без extends Application.
+            Так кнопка Run в IntelliJ работает без ручных VM options.
+        -->
+        <javafx.main.class>app.desktop.Launcher</javafx.main.class>
+    </properties>
+
+    <dependencies>
+        <!-- Мозг приложения: модели, репозитории, сервисы -->
+        <dependency>
+            <groupId>com.fitapp</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- JavaFX 21 -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+        </dependency>
+
+        <!--
+            JNA: вызов shell32.SetCurrentProcessExplicitAppUserModelID.
+            Без AppUserModelID Windows не даёт закрепить окно на панели задач.
+        -->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+        </dependency>
+
+        <!-- Логи в консоль -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                mvn -pl desktop javafx:run
+                Плагин сам собирает module-path для JavaFX под текущую ОС.
+            -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>${javafx.main.class}</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

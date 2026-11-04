@@ -1,0 +1,501 @@
+/* =============================================================================
+   base.css — общая раскладка и компоненты.
+
+   Цвета здесь НЕ задаются напрямую: используются переменные темы
+   (-fx-bg, -fx-surface, -fx-text, -fx-accent и т.д.).
+   Значения переменных лежат в theme_gray_blue.css / theme_turquoise.css /
+   theme_purple.css, а акцентный цвет пользователя приходит inline-стилем
+   на корень сцены (ThemeManager).
+   ============================================================================= */
+
+.root {
+    -fx-font-family: "Segoe UI", "Tahoma", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: -fx-bg;
+}
+
+/* ------------------------------- раскладка -------------------------------- */
+
+.screen {
+    -fx-padding: 22 26 22 26;
+    -fx-spacing: 14;
+    -fx-background-color: -fx-bg;
+}
+
+.label {
+    -fx-text-fill: -fx-text;
+}
+
+.app-title {
+    -fx-font-size: 2.08em;
+    -fx-font-weight: bold;
+}
+
+.screen-title {
+    -fx-font-size: 1.46em;
+    -fx-font-weight: bold;
+}
+
+.section-title {
+    -fx-font-size: 1.08em;
+    -fx-font-weight: bold;
+}
+
+.card-title {
+    -fx-font-size: 1.15em;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent;
+}
+
+.muted {
+    -fx-text-fill: -fx-text-muted;
+}
+
+.caption {
+    -fx-font-size: 0.85em;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-muted;
+}
+
+/* заголовки полей в карточке упражнения: «ИП:», «Движение:» ... */
+.field-label {
+    -fx-font-size: 0.92em;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-muted;
+}
+
+.card {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: 14;
+    -fx-border-color: -fx-border;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-padding: 1.25em;
+}
+
+/* -------------------------------- кнопки ---------------------------------- */
+
+.button {
+    -fx-background-color: -fx-surface-2;
+    -fx-background-radius: 10;
+    -fx-text-fill: -fx-text;
+    -fx-padding: 0.7em 1.25em 0.7em 1.25em;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: -fx-surface-3;
+}
+
+.primary-button {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.primary-button:hover {
+    -fx-background-color: derive(-fx-accent, -12%);
+}
+
+/* Большая кнопка «Старт» */
+.primary-big {
+    -fx-background-color: -fx-accent;
+    -fx-background-radius: 14;
+    -fx-text-fill: white;
+    -fx-font-size: 1.23em;
+    -fx-font-weight: bold;
+    -fx-padding: 1.1em 2.3em 1.1em 2.3em;
+    -fx-cursor: hand;
+}
+
+.primary-big:hover {
+    -fx-background-color: derive(-fx-accent, -12%);
+}
+
+/* Большая кнопка «Завершить» */
+.danger-big {
+    -fx-background-color: -fx-danger;
+    -fx-background-radius: 14;
+    -fx-text-fill: white;
+    -fx-font-size: 1.23em;
+    -fx-font-weight: bold;
+    -fx-padding: 1.1em 2.3em 1.1em 2.3em;
+    -fx-cursor: hand;
+}
+
+.danger-big:hover {
+    -fx-background-color: derive(-fx-danger, -12%);
+}
+
+/* Маленькие кнопки: Стоп / Записать / Сброс */
+.small-button {
+    -fx-background-color: -fx-surface-2;
+    -fx-background-radius: 8;
+    -fx-text-fill: -fx-text;
+    -fx-font-size: 0.92em;
+    -fx-padding: 0.55em 0.92em 0.55em 0.92em;
+    -fx-cursor: hand;
+}
+
+.small-button:hover {
+    -fx-background-color: -fx-surface-3;
+}
+
+.ghost-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-muted;
+    -fx-font-size: 1.38em;
+    -fx-padding: 0.3em 0.8em 0.3em 0.8em;
+    -fx-cursor: hand;
+}
+
+.ghost-button:hover {
+    -fx-text-fill: -fx-accent;
+}
+
+/* -------------------------------- таймер ---------------------------------- */
+
+.timer {
+    -fx-font-family: "Consolas", "Courier New", monospace;
+    -fx-font-size: 3.38em;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent;
+}
+
+/* таймер отдыха — компактнее главного */
+.rest-timer {
+    -fx-font-family: "Consolas", "Courier New", monospace;
+    -fx-font-size: 1.69em;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text;
+}
+
+/* текст только для чтения: выделяется и копируется, но выглядит как обычный текст */
+.readonly-text {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-text-fill: -fx-text;
+}
+
+.readonly-text .content {
+    -fx-background-color: transparent;
+}
+
+.readonly-text:focused {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+/* ------------------------------ поля ввода -------------------------------- */
+
+.text-field,
+.text-area {
+    -fx-background-color: -fx-surface-2;
+    -fx-background-radius: 8;
+    -fx-text-fill: -fx-text;
+    -fx-prompt-text-fill: -fx-text-muted;
+    -fx-border-color: -fx-border;
+    -fx-border-radius: 8;
+    -fx-padding: 0.45em 0.6em 0.45em 0.6em;
+}
+
+.combo-box,
+.date-picker,
+.spinner,
+.color-picker {
+    -fx-background-color: -fx-surface-2;
+    -fx-background-radius: 8;
+    -fx-text-fill: -fx-text;
+    -fx-border-color: -fx-border;
+    -fx-border-radius: 8;
+    -fx-padding: 0.3em 0.5em 0.3em 0.5em;
+}
+
+.text-field:focused,
+.text-area:focused,
+.combo-box:focused,
+.date-picker:focused {
+    -fx-border-color: -fx-accent;
+}
+
+.text-area .content {
+    -fx-background-color: -fx-surface-2;
+}
+
+/* ------------------------------ таблицы ----------------------------------- */
+
+.table-view {
+    -fx-background-color: -fx-surface;
+    -fx-control-inner-background: -fx-surface;
+    -fx-table-cell-border-color: transparent;
+    -fx-background-radius: 12;
+    -fx-padding: 4;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -fx-surface-2;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -fx-text-muted;
+    -fx-font-size: 0.85em;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: -fx-text;
+    -fx-padding: 0.45em 0.6em 0.45em 0.6em;
+}
+
+.table-row-cell {
+    -fx-background-color: -fx-surface;
+    -fx-cell-size: 2.5em;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-surface-alt;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -fx-selection;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: -fx-text;
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: -fx-text-muted;
+}
+
+/* -------------------------------- списки ---------------------------------- */
+
+.list-view {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: 12;
+    -fx-padding: 4;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text;
+    -fx-padding: 8 10 8 10;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: -fx-surface-2;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: -fx-selection;
+    -fx-text-fill: -fx-text;
+}
+
+.list-view .placeholder .label {
+    -fx-text-fill: -fx-text-muted;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: -fx-surface-2;
+    -fx-text-fill: -fx-text;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: -fx-surface;
+    -fx-border-color: -fx-border;
+}
+
+/* ------------------------------ чекбоксы ---------------------------------- */
+
+.check-box {
+    -fx-text-fill: -fx-text;
+}
+
+.check-box .box {
+    -fx-background-color: -fx-surface-2;
+    -fx-border-color: -fx-border;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -fx-accent;
+    -fx-border-color: -fx-accent;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+/* корень экрана с оверлеем (диалогом) */
+.screen-root {
+    -fx-background-color: -fx-bg;
+}
+
+/* затемнение под модальной карточкой */
+.overlay-backdrop {
+    -fx-background-color: rgba(8, 11, 18, 0.55);
+    -fx-padding: 28;
+}
+
+/* моноширинный шрифт для JSON */
+.json-area {
+    -fx-font-family: "Consolas", "Courier New", monospace;
+    -fx-font-size: 0.92em;
+}
+
+/* прозрачный ScrollPane для боковых панелей */
+.edge-to-edge,
+.edge-to-edge > .viewport {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* ------------------------------- диалоги ---------------------------------- */
+
+.dialog-pane {
+    -fx-background-color: -fx-surface;
+}
+
+.dialog-pane .label {
+    -fx-text-fill: -fx-text;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: -fx-surface-2;
+}
+
+.dialog-pane .button {
+    -fx-background-color: -fx-surface-2;
+    -fx-text-fill: -fx-text;
+}
+
+/* --------------------------- подсказки и скролл --------------------------- */
+
+.tooltip {
+    -fx-background-color: -fx-surface-2;
+    -fx-text-fill: -fx-text;
+    -fx-background-radius: 8;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: -fx-surface-3;
+    -fx-background-radius: 8;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+/* ---------------- полоса размера шрифта (MainApp, общая для всех экранов) ------- */
+
+.font-bar {
+    -fx-padding: 4 14 4 14;
+    -fx-background-color: -fx-bg;
+    -fx-border-color: -fx-border;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* ---------- тренировка и справочник: таблица + карточка (перетаскивание) -------- */
+
+.workout-split,
+.catalog-split {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* полоса-разделитель: тонкая, но хватается мышью (и подсвечивается) */
+.workout-split > .split-pane-divider,
+.catalog-split > .split-pane-divider {
+    -fx-padding: 0 3 0 3;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.workout-split > .split-pane-divider:hover,
+.catalog-split > .split-pane-divider:hover {
+    -fx-background-color: -fx-accent;
+}
+
+/* ------------------------------ графики (замеры) ------------------------------ */
+
+/* Светлый фон графика выбивается из тёмной темы — подстраиваем под поверхность */
+.chart {
+    -fx-background-color: -fx-surface;
+    -fx-padding: 10;
+}
+
+.chart-plot-background {
+    -fx-background-color: -fx-surface-2;
+}
+
+.chart-vertical-grid-lines,
+.chart-horizontal-grid-lines {
+    -fx-stroke: -fx-border;
+    -fx-stroke-dash-array: 4 6;
+}
+
+.chart-title {
+    -fx-text-fill: -fx-text;
+    -fx-font-size: 1.08em;
+}
+
+.axis .axis-label {
+    -fx-text-fill: -fx-text;
+}
+
+.axis .tick-label {
+    -fx-text-fill: -fx-text-muted;
+}
+
+.axis-tick-mark,
+.axis-minor-tick-mark {
+    -fx-stroke: -fx-border;
+}
+
+/* линия и точки серии: цвет акцента как в остальном интерфейсе */
+.default-color0.chart-series-line {
+    -fx-stroke: -fx-accent;
+    -fx-stroke-width: 2px;
+}
+
+.default-color0.chart-line-symbol {
+    -fx-background-color: -fx-accent, -fx-surface;
+    -fx-background-insets: 0, 2;
+    -fx-padding: 5px;
+}
+
+/* ---------------------- блок таймера отдыха (экран тренировки) ----------------- */
+
+/* Ширина в em: при шрифте 13 px блок ~208 px, при 24 px — ~384 px,
+   поэтому спиннеры и кнопки не обрезаются. */
+.rest-timer-card {
+    -fx-padding: 0.7em 1em 0.7em 1em;
+    -fx-min-width: 16em;
+}
+
+/* Поля внутри блока не схлопываются при крупном шрифте.
+   Значения в em: 5.4em = 70 px, 6.2em = 80 px при базе 13 px.
+   Меньше нельзя — в спиннере не видно цифр (остаются только стрелки). */
+.rest-timer-card .spinner {
+    -fx-min-width: 5.4em;
+    -fx-pref-width: 6.2em;
+}
+
+.rest-timer-card .combo-box {
+    -fx-min-width: 6.2em;
+    -fx-pref-width: 7.1em;
+}

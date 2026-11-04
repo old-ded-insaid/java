@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- Экран тренировки: таймер, кнопки, таблица подходов, карточка упражнения -->
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.desktop.controller.WorkoutController"
+      styleClass="screen"
+      spacing="14">
+
+    <!-- Верхняя строка: назад, название, справа — таймер и отдых -->
+    <HBox spacing="16" alignment="CENTER_LEFT">
+        <Button text="←" onAction="#onBack" styleClass="ghost-button"/>
+        <!-- название может сжаться (многоточие), чтобы не выдавливать таймер -->
+        <Label fx:id="titleLabel" text="Тренировка" styleClass="screen-title"
+               minWidth="0" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        <Region minWidth="16"/>
+
+        <!-- Справа столбиком: главный таймер и блок отдыха.
+             Столбиком, а не в одну строку: иначе при шрифте 24 px
+             таймер и блок отдыха не помещаются рядом и текст обрезается. -->
+        <VBox spacing="8" alignment="CENTER_RIGHT" minWidth="0">
+            <Label fx:id="timerLabel" text="00:00:00" styleClass="timer"/>
+
+            <!-- отдых между подходами: тянется по ширине, ничего не обрезается
+                 при крупном шрифте (min/max вместо жёсткого prefWidth) -->
+            <VBox spacing="4" alignment="CENTER_RIGHT" styleClass="card, rest-timer-card"
+                  maxWidth="Infinity">
+                <Label text="Отдых" styleClass="caption"/>
+                <Label fx:id="restTimerLabel" text="00:45" styleClass="rest-timer"/>
+                <HBox spacing="6" alignment="CENTER_RIGHT">
+                    <Spinner fx:id="restMinutesSpinner" editable="true"
+                             prefWidth="80" minWidth="70" maxWidth="Infinity"
+                             HBox.hgrow="ALWAYS"/>
+                    <Label text=":"/>
+                    <Spinner fx:id="restSecondsSpinner" editable="true"
+                             prefWidth="80" minWidth="70" maxWidth="Infinity"
+                             HBox.hgrow="ALWAYS"/>
+                    <ComboBox fx:id="restStepBox" prefWidth="92" minWidth="80"
+                              maxWidth="Infinity" promptText="шаг"/>
+                    <Button text="Старт" onAction="#onRestStart" styleClass="small-button"/>
+                    <Button text="Стоп" onAction="#onRestStop" styleClass="small-button"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </HBox>
+
+    <!-- Выбор упражнения + большие кнопки старта/завершения тренировки -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <ComboBox fx:id="exerciseBox" prefWidth="300" promptText="Выберите упражнение"/>
+        <Button text="Добавить упражнение" onAction="#onAddExercise"/>
+        <Button text="Сменить инвентарь" onAction="#onChangeEquipment" styleClass="small-button"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Старт" onAction="#onStart" styleClass="primary-big"/>
+        <Button text="Завершить" onAction="#onFinish" styleClass="danger-big"/>
+    </HBox>
+
+    <!-- Управление подходами: время вводится прямо в таблице (двойной клик) -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="Стоп" onAction="#onPause" styleClass="small-button"/>
+        <Button text="Записать" onAction="#onRecord" styleClass="small-button"/>
+        <Button text="Пропустить" onAction="#onSkip" styleClass="small-button"/>
+        <Button text="Отменить пропуск" onAction="#onUnskip" styleClass="small-button"/>
+        <Button text="Сброс" onAction="#onReset" styleClass="small-button"/>
+        <Button text="Сброс сортировки" onAction="#onResetSorting" styleClass="small-button"
+                fx:id="resetSortingButton"/>
+    </HBox>
+
+    <!-- Таблица слева, описание упражнения справа. Ширину задаёт пользователь,
+         перетаскивая разделитель (70% / 30% по умолчанию). -->
+    <SplitPane fx:id="workoutSplit" orientation="HORIZONTAL" dividerPositions="0.7"
+               VBox.vgrow="ALWAYS" styleClass="workout-split">
+
+        <!-- Слева таблица подходов -->
+        <VBox spacing="8" minWidth="360">
+            <TableView fx:id="setTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colExercise" text="Упражнение" prefWidth="230" minWidth="120"/>
+                    <TableColumn fx:id="colSetNumber" text="Подход" prefWidth="70" minWidth="60"/>
+                    <TableColumn fx:id="colReps" text="Повторы" prefWidth="85" minWidth="70"/>
+                    <TableColumn fx:id="colWeight" text="Вес, кг" prefWidth="95" minWidth="80"/>
+                    <TableColumn fx:id="colTime" text="Время, чч:мм:сс" prefWidth="130" minWidth="110"/>
+                    <TableColumn fx:id="colEquipment" text="Инвентарь" prefWidth="180" minWidth="120"/>
+                    <TableColumn fx:id="colNote" text="Заметка" prefWidth="180" minWidth="90"/>
+                </columns>
+            </TableView>
+            <Label fx:id="statusLabel" text="Таймер остановлен" styleClass="muted"/>
+        </VBox>
+
+        <!-- Справа карточка выбранного упражнения.
+             SplitPane.resizableWithParent="false": при растягивании окна ширину
+             забирает таблица, а карточка остаётся такой, какой её оставил пользователь.
+             ScrollPane — только на случай, если текста больше, чем помещается. -->
+        <VBox styleClass="card" spacing="6" minWidth="260" prefWidth="330"
+              SplitPane.resizableWithParent="false">
+            <Label text="Упражнение" styleClass="section-title"/>
+            <Label fx:id="exerciseNameLabel" text="—" styleClass="card-title" wrapText="true"/>
+
+            <ScrollPane fx:id="descriptionScroll" fitToWidth="true" fitToHeight="true"
+                        hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                        VBox.vgrow="ALWAYS" styleClass="edge-to-edge">
+                <VBox fx:id="descriptionBox" spacing="6">
+                    <Label text="Исходное положение:" styleClass="field-label"/>
+                    <TextArea fx:id="setupLabel" styleClass="readonly-text" editable="false"
+                              wrapText="true" prefRowCount="2" focusTraversable="false"
+                              VBox.vgrow="ALWAYS"/>
+
+                    <Label text="Движение:" styleClass="field-label"/>
+                    <TextArea fx:id="movementLabel" styleClass="readonly-text" editable="false"
+                              wrapText="true" prefRowCount="3" focusTraversable="false"
+                              VBox.vgrow="ALWAYS"/>
+
+                    <Label text="Мышцы:" styleClass="field-label"/>
+                    <TextArea fx:id="musclesLabel" styleClass="readonly-text" editable="false"
+                              wrapText="true" prefRowCount="2" focusTraversable="false"
+                              VBox.vgrow="ALWAYS"/>
+
+                    <Label text="Чего избегать:" styleClass="field-label"/>
+                    <TextArea fx:id="avoidLabel" styleClass="readonly-text" editable="false"
+                              wrapText="true" prefRowCount="2" focusTraversable="false"
+                              VBox.vgrow="ALWAYS"/>
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </SplitPane>
+</VBox>

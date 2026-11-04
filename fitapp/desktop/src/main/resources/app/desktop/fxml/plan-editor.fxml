@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- Конструктор шаблона: шаблон слева, состав в центре, панель справа.
+     Корень StackPane: поверх экрана показывается "диалог" импорта JSON. -->
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="app.desktop.controller.PlanEditorController"
+           styleClass="screen-root">
+
+    <children>
+
+        <VBox styleClass="screen" spacing="14">
+
+            <!-- Шапка -->
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Button text="←" onAction="#onBack" styleClass="ghost-button"/>
+                <Label text="Шаблоны тренировок" styleClass="screen-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Импорт JSON" onAction="#onShowImport" styleClass="small-button"/>
+                <Button text="Сохранить шаблон" onAction="#onSavePlan" styleClass="primary-button"/>
+            </HBox>
+
+            <HBox spacing="16" VBox.vgrow="ALWAYS">
+
+                <!-- ===================== СЛЕВА: сам шаблон ===================== -->
+                <VBox styleClass="card" prefWidth="330" spacing="8">
+                    <Label text="Шаблон" styleClass="section-title"/>
+
+                    <Label text="Открыть существующий" styleClass="caption"/>
+                    <ComboBox fx:id="planBox" maxWidth="Infinity" promptText="Выберите шаблон"/>
+                    <Button text="Новый шаблон" onAction="#onNewPlan"
+                            styleClass="small-button" maxWidth="Infinity"/>
+
+                    <Label text="Название" styleClass="caption"/>
+                    <TextField fx:id="nameField" promptText="Тренировка Г (Взрывная сила)"/>
+
+                    <Label text="Описание / цель" styleClass="caption"/>
+                    <TextArea fx:id="descriptionArea" prefRowCount="7" wrapText="true" VBox.vgrow="ALWAYS"
+                              promptText="Например: взрывная сила ног, короткие подходы"/>
+
+                    <Label fx:id="statusLabel" styleClass="muted" wrapText="true"/>
+                </VBox>
+
+                <!-- ================= ЦЕНТР: упражнения шаблона ================= -->
+                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Упражнения в шаблоне" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Добавить упражнение" onAction="#onShowAddPanel"
+                                styleClass="primary-button"/>
+                        <Button text="↑ Вверх" onAction="#onMoveUp" styleClass="small-button"/>
+                        <Button text="↓ Вниз" onAction="#onMoveDown" styleClass="small-button"/>
+                        <Button text="Удалить" onAction="#onRemoveExercise" styleClass="small-button"/>
+                    </HBox>
+
+                    <TableView fx:id="exerciseTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colIndex" text="№" prefWidth="50" minWidth="45"/>
+                            <TableColumn fx:id="colExercise" text="Название" prefWidth="270" minWidth="140"/>
+                            <TableColumn fx:id="colSets" text="Подходы" prefWidth="80" minWidth="70"/>
+                            <TableColumn fx:id="colReps" text="Повторы" prefWidth="80" minWidth="70"/>
+                            <TableColumn fx:id="colWeight" text="Вес, кг" prefWidth="85" minWidth="70"/>
+                            <TableColumn fx:id="colEquipment" text="Инвентарь" prefWidth="170" minWidth="100"/>
+                        </columns>
+                    </TableView>
+
+                    <Label text="Двойной клик по строке открывает описание упражнения (ИП, движение, мышцы, чего избегать)."
+                           styleClass="caption"/>
+                </VBox>
+
+                <!-- ============ СПРАВА: панель добавления упражнения ============ -->
+                <ScrollPane fx:id="addPanelScroll"
+                            prefWidth="380"
+                            fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            vbarPolicy="AS_NEEDED"
+                            styleClass="edge-to-edge"
+                            visible="false"
+                            managed="false">
+                    <content>
+                        <VBox styleClass="card" spacing="8">
+
+                            <Label text="Добавить упражнение" styleClass="section-title"/>
+
+                            <Label text="Из справочника (начните печатать для поиска)" styleClass="caption"/>
+                            <ComboBox fx:id="exerciseBox" maxWidth="Infinity" prefWidth="320"
+                                      promptText="Например: жим"/>
+
+                            <CheckBox fx:id="newExerciseCheck" text="Создать новое упражнение"/>
+
+                            <Label text="Название" styleClass="caption"/>
+                            <TextField fx:id="newNameField" promptText="Взрывные приседания с гантелями"/>
+
+                            <Label text="ИП (исходное положение)" styleClass="caption"/>
+                            <TextArea fx:id="setupArea" prefRowCount="2" wrapText="true"
+                                      promptText="стоя, гантели на плечах, стопы на ширине плеч"/>
+
+                            <Label text="Движение" styleClass="caption"/>
+                            <TextArea fx:id="movementArea" prefRowCount="3" wrapText="true"
+                                      promptText="на вдохе присядь до параллели бёдер, на выдохе мощно встань"/>
+
+                            <Label text="Мышцы" styleClass="caption"/>
+                            <TextArea fx:id="musclesArea" prefRowCount="2" wrapText="true"
+                                      promptText="квадрицепсы, ягодичные"/>
+
+                            <Label text="Чего избегать" styleClass="caption"/>
+                            <TextArea fx:id="avoidArea" prefRowCount="2" wrapText="true"
+                                      promptText="округления спины, сведения колен, медленного темпа"/>
+
+                            <Label text="Инвентарь" styleClass="caption"/>
+                            <ListView fx:id="equipmentList" prefHeight="90"/>
+
+                            <HBox spacing="8">
+                                <ComboBox fx:id="equipmentBox"
+                                          HBox.hgrow="ALWAYS"
+                                          maxWidth="Infinity"
+                                          promptText="Выберите инвентарь"/>
+                                <Spinner fx:id="quantitySpinner" prefWidth="80"/>
+                            </HBox>
+
+                            <HBox spacing="8">
+                                <Button fx:id="equipmentAttachButton"
+                                        text="Прикрепить инвентарь"
+                                        onAction="#onAttachEquipment"
+                                        styleClass="small-button"
+                                        HBox.hgrow="ALWAYS"
+                                        maxWidth="Infinity"/>
+                                <Button fx:id="equipmentDetachButton"
+                                        text="Убрать"
+                                        onAction="#onDetachEquipment"
+                                        styleClass="small-button"/>
+                            </HBox>
+
+                            <HBox spacing="10">
+                                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                    <Label text="Подходы" styleClass="caption"/>
+                                    <Spinner fx:id="setsSpinner" maxWidth="Infinity" editable="true"/>
+                                </VBox>
+                                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                    <Label text="Повторы" styleClass="caption"/>
+                                    <Spinner fx:id="repsSpinner" maxWidth="Infinity" editable="true"/>
+                                </VBox>
+                            </HBox>
+
+                            <Label text="Целевой вес, кг" styleClass="caption"/>
+                            <TextField fx:id="targetWeightField"
+                                       promptText="например 8 (пусто — без веса)"/>
+
+                            <Button text="Добавить в шаблон"
+                                    onAction="#onConfirmAdd"
+                                    styleClass="primary-button"
+                                    maxWidth="Infinity"/>
+
+                            <Button text="Сохранить упражнение"
+                                    onAction="#onSaveDetails"
+                                    styleClass="small-button"
+                                    maxWidth="Infinity"/>
+
+                            <Button text="Отмена"
+                                    onAction="#onCancelPanel"
+                                    styleClass="small-button"
+                                    maxWidth="Infinity"/>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </HBox>
+        </VBox>
+
+        <!-- ============== СКРЫТЫЙ ДИАЛОГ ИМПОРТА JSON ============== -->
+        <StackPane fx:id="importOverlay"
+                   styleClass="overlay-backdrop"
+                   visible="false"
+                   managed="false">
+            <children>
+                <VBox styleClass="card" maxWidth="720" maxHeight="-Infinity" spacing="10">
+
+                    <Label text="Импорт шаблона из JSON" styleClass="section-title"/>
+
+                    <Label text="Вставьте JSON вида { &quot;name&quot;: ..., &quot;description&quot;: ..., &quot;exercises&quot;: [ { ... } ] }"
+                           styleClass="muted" wrapText="true"/>
+
+                    <TextArea fx:id="importJsonArea"
+                              prefRowCount="16"
+                              wrapText="false"
+                              styleClass="json-area"
+                              promptText="{&#10;  &quot;name&quot;: &quot;Тренировка Г (Взрывная сила)&quot;,&#10;  &quot;description&quot;: &quot;Цель: максимальная скорость, реакция.&quot;,&#10;  &quot;exercises&quot;: [ ... ]&#10;}"/>
+
+                    <HBox spacing="10" alignment="CENTER_RIGHT">
+                        <Button text="Отмена" onAction="#onCancelImport" styleClass="small-button"/>
+                        <Button text="Импортировать" onAction="#onImportJson" styleClass="primary-button"/>
+                    </HBox>
+                </VBox>
+            </children>
+        </StackPane>
+    </children>
+</StackPane>
